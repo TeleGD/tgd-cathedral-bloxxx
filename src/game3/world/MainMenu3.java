@@ -9,8 +9,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import game1.world.World1;
-import game2.world.World2;
 import game3.world.World3;
 import general.Main;
 import menus.MainMenu;
