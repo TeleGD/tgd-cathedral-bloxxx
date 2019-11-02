@@ -1,4 +1,4 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 
 import org.newdawn.slick.Color;
@@ -6,7 +6,6 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -30,14 +29,14 @@ public class Pendulum extends BasicGameState{
 		speed=8000;
 		length=1800;
 		initialAngle=(float) (-Math.PI/12);
-		omega=World3.GRAVITY/length;
+		omega=World.GRAVITY/length;
 		loadImage();
 		addBlock();
 	}
 
 	public void loadImage(){
 		try {
-			corde=new Image(World3.DIRECTORY_IMAGES+"corde.png").getScaledCopy(10, (int) length);
+			corde=new Image(World.DIRECTORY_IMAGES+"corde.png").getScaledCopy(10, (int) length);
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,7 +46,7 @@ public class Pendulum extends BasicGameState{
 
 	private void addBlock() {
 		try {
-			block=new Block(0,0,100,100,new Image(World3.DIRECTORY_IMAGES+"Blocs/"+World3.colorImage+" Normal.png"));
+			block=new Block(0,0,100,100,new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Normal.png"));
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,10 +91,10 @@ public class Pendulum extends BasicGameState{
 	}
 
 	private float calculateTheta() {
-		return (float) (initialAngle*Math.cos(speed*(double)(omega*World3.getTimeInMillis()/1000.0)));
+		return (float) (initialAngle*Math.cos(speed*(omega*World.getTimeInMillis()/1000.0)));
 	}
 	private float calculateThetaDot() {
-		return (float) (initialAngle*-1*omega*speed*Math.sin(speed*(double)(omega*World3.getTimeInMillis()/1000.0)));
+		return (float) (initialAngle*-1*omega*speed*Math.sin(speed*(omega*World.getTimeInMillis()/1000.0)));
 	}
 
 
@@ -174,7 +173,7 @@ public class Pendulum extends BasicGameState{
 		return block;
 	}
 	public void finishTower() throws SlickException {
-		block=new Block(World3.getTower().getTop().getX(),0,100,100, new Image(World3.DIRECTORY_IMAGES+"Blocs/"+World3.colorImage+" Toit.png"));
+		block=new Block(World.getTower().getTop().getX(),0,100,100, new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Toit.png"));
 		block.setSpeedY(2f);
 		block.setSpeedX(0f);
 		block.setRealeased(true);

@@ -4,8 +4,8 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import game3.world.MainMenu3;
-import game3.world.World3;
+import games.cathedralBloxxx.MainMenuCbl;
+import games.cathedralBloxxx.World;
 
 public class MainMenu extends Menu{
 
@@ -14,7 +14,7 @@ public class MainMenu extends Menu{
 	public MainMenu(){
 		super.setTitrePrincipal("MULTIGAME DESIGN");
 		super.setTitreSecondaire("Menu Principal");
-		super.setItems(World3.GAME_NAME,"Scores", "Quitter");
+		super.setItems(World.GAME_NAME,"Scores", "Quitter");
 
 		super.setEnableClignote(false);
 		super.setCouleurClignote(Color.red);
@@ -30,7 +30,7 @@ public class MainMenu extends Menu{
 	public void onOptionItemSelected(int position) {
 		switch (position) {
 		case 0:
-			game.enterState(MainMenu3.ID, new FadeOutTransition(),
+			game.enterState(MainMenuCbl.ID, new FadeOutTransition(),
 					new FadeInTransition());
 			break;
 		case 1:

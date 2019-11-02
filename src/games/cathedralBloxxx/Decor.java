@@ -1,4 +1,4 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 
 import org.newdawn.slick.Image;
@@ -30,14 +30,14 @@ public class Decor {
 		this.height=0;
 		this.compteur=0;
 		this.listSkyElements=new ArrayList<SkyElements>();
-		this.background =new Image(World3.DIRECTORY_IMAGES+"DecorBase.png");
+		this.background =new Image(World.DIRECTORY_IMAGES+"DecorBase.png");
         this.background=background.getScaledCopy(Main.longueur,Main.hauteur);
 
 		for(int i=0;i<cloudImages.length;i++){
-			cloudImages[i]=new Image(World3.DIRECTORY_IMAGES+"SkyElements/cloud"+(i+1)+".png");
+			cloudImages[i]=new Image(World.DIRECTORY_IMAGES+"SkyElements/cloud"+(i+1)+".png");
 		}
 
-		imageStar=new Image(World3.DIRECTORY_IMAGES+"SkyElements/star2.png");
+		imageStar=new Image(World.DIRECTORY_IMAGES+"SkyElements/star2.png");
 
 		red=169;
 		green=217;

@@ -1,8 +1,7 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 import java.util.Random;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -12,8 +11,6 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
 
 import general.Main;
-
-import java.util.Random;
 
 
 

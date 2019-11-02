@@ -1,11 +1,9 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -17,10 +15,8 @@ public class Tower extends Rectangle{
 
 	ArrayList<Block> blocks;
 	private boolean needDefile;
-	private int cpt;
 	private int mult;
 	private boolean comb=false;
-	private int accelX;
 	private double alpha=1;
 	private double amplitude=0;
 	public static int difficulty;
@@ -46,12 +42,12 @@ public class Tower extends Rectangle{
 
 		for(int i = 0; i < blocks.size(); i++){
 			blocks.get(i).update(arg0, arg1, arg2);
-			blocks.get(i).setX(blocks.get(i).getX()+((float) (amplitude*Math.cos(alpha*World3.getTimeInMillis()/1000))));
+			blocks.get(i).setX(blocks.get(i).getX()+((float) (amplitude*Math.cos(alpha*World.getTimeInMillis()/1000))));
 			if (needDefile==true){
 				blocks.get(i).setY(blocks.get(i).getY()+arg2/5);
 			}
 		}
-		if(needDefile)World3.getDecor().setHeight(World3.getDecor().getHeight()+arg2/5);
+		if(needDefile)World.getDecor().setHeight(World.getDecor().getHeight()+arg2/5);
 
 		if(blocks.size()>1)
 		{
@@ -121,15 +117,14 @@ public class Tower extends Rectangle{
 		}else{
 			mult=1;
 		}
-		if(World3.difficulty==0){
+		if(World.difficulty==0){
 
-			World3.setScore(World3.getScore()+mult*100);
+			World.setScore(World.getScore()+mult*100);
 		}else{
-			World3.setScore(World3.getScore()+mult*2*World3.difficulty*100);
+			World.setScore(World.getScore()+mult*2*World.difficulty*100);
 		}
-		World3.getPendulum().notifyStackedBlock();
+		World.getPendulum().notifyStackedBlock();
 
-		cpt=0;
 		System.out.println("top="+getTop().getX());
 		System.out.println("block="+block.getX());
 

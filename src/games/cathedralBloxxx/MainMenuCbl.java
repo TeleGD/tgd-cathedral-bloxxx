@@ -1,4 +1,4 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -9,17 +9,17 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import game3.world.World3;
+import games.cathedralBloxxx.World;
 import general.Main;
 import menus.MainMenu;
 import menus.Menu;
 
-public class MainMenu3 extends Menu{
+public class MainMenuCbl extends Menu{
 
 	public static int ID = -10;
 
 	private Image[] image= new Image[3];
-	public MainMenu3(){
+	public MainMenuCbl(){
 
 		super.setTitrePrincipal("CATHEDRAL BLOXXX");
 		super.setTitreSecondaire("Choisissez votre difficulté");
@@ -33,9 +33,9 @@ public class MainMenu3 extends Menu{
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException{
-		image[0]=new Image(World3.DIRECTORY_IMAGES+"Blocs/Rouge Normal.png").getScaledCopy(50, 50);
-		image[1]=new Image(World3.DIRECTORY_IMAGES+"Blocs/Bleu Normal.png").getScaledCopy(50, 50);
-		image[2]=new Image(World3.DIRECTORY_IMAGES+"Blocs/Vert Normal.png").getScaledCopy(50, 50);
+		image[0]=new Image(World.DIRECTORY_IMAGES+"Blocs/Rouge Normal.png").getScaledCopy(50, 50);
+		image[1]=new Image(World.DIRECTORY_IMAGES+"Blocs/Bleu Normal.png").getScaledCopy(50, 50);
+		image[2]=new Image(World.DIRECTORY_IMAGES+"Blocs/Vert Normal.png").getScaledCopy(50, 50);
 	}
 
 
@@ -56,9 +56,9 @@ public class MainMenu3 extends Menu{
 	@Override
 	public void onOptionItemSelected(int position) {
 
-		World3.difficulty=position;
+		World.difficulty=position;
 		if(position<3){
-			game.enterState(World3.ID, new FadeOutTransition(),
+			game.enterState(World.ID, new FadeOutTransition(),
 					new FadeInTransition());
 		}else if (position==3){
 			game.enterState(MainMenu.ID);

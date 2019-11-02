@@ -17,7 +17,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import api.APIListener;
 import api.TGDApi;
 import db.Person;
-import game3.world.World3;
+import games.cathedralBloxxx.World;
 import general.Main;
 import general.ui.Button;
 import general.ui.TGDComponent;
@@ -102,7 +102,7 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 		for(int i=0;i<NB_GAME;i++)
 		{
 			String name = null;
-			if(i==0)name=World3.GAME_NAME;
+			if(i==0)name=World.GAME_NAME;
 			g.setColor(new Color(255,0,0));
 			g.drawString(name,PADDING_LEFT+ i*LARGEUR_COLUMN+PADDING_LEFT_COLUMN+LARGEUR_COLUMN/2-g.getFont().getWidth(name), BEGIN_Y_TAB);
 

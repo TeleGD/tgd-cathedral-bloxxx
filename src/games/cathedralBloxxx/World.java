@@ -1,4 +1,4 @@
-package game3.world;
+package games.cathedralBloxxx;
 
 import java.awt.Font;
 import java.io.File;
@@ -10,13 +10,11 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import api.TGDApi;
-import db.SQLiteJDBC;
 import general.Main;
 import general.ui.Button;
 import general.ui.TGDComponent;
@@ -26,13 +24,13 @@ import general.ui.TextField.EnterActionListener;
 import general.utils.FontUtils;
 import menus.MainMenu;
 
-public class World3 extends BasicGameState implements OnClickListener, EnterActionListener{
+public class World extends BasicGameState implements OnClickListener, EnterActionListener{
 	public final static float GRAVITY= 0.3f;
 	public final static int ID=3;
 
-	public final static String GAME_NAME="Cathedral Bloxx";
+	public final static String GAME_NAME="Cathedral Bloxxx";
 
-	public final static String GAME_FOLDER_NAME="CathedralBloxx";
+	public final static String GAME_FOLDER_NAME="cathedralBloxxx";
 	public final static String DIRECTORY_SOUNDS="sounds"+File.separator+GAME_FOLDER_NAME+File.separator;
 	public final static String DIRECTORY_MUSICS="musics"+File.separator+GAME_FOLDER_NAME+File.separator;
 	public final static String DIRECTORY_IMAGES="images"+File.separator+GAME_FOLDER_NAME+File.separator;
@@ -90,7 +88,7 @@ public class World3 extends BasicGameState implements OnClickListener, EnterActi
 
 		decor=new Decor();
 		timeInitial=System.currentTimeMillis(); // on reinitialise le temps
-		tower=new Tower(Main.longueur/2,Main.hauteur,new Block(pendulum.getX() - 50, Main.hauteur-101,100,100,new Image(World3.DIRECTORY_IMAGES+"Blocs/"+World3.colorImage+" Porte.png")));
+		tower=new Tower(Main.longueur/2,Main.hauteur,new Block(pendulum.getX() - 50, Main.hauteur-101,100,100,new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Porte.png")));
 
 		soundMusicBackground=new Music(DIRECTORY_MUSICS+"what_is_love.ogg");
 		soundMusicBackground.play(1, 0.3f);
@@ -183,12 +181,12 @@ public class World3 extends BasicGameState implements OnClickListener, EnterActi
  			break;
   		case Input.KEY_ESCAPE:
   			if(perdu){
-  				this.soundMusicBackground.stop();
-				game.enterState(MainMenu3.ID);
+  				World.soundMusicBackground.stop();
+				game.enterState(MainMenuCbl.ID);
 			}
   			break;
   		case Input.KEY_F1:
-  			this.soundMusicBackground.stop();
+  			World.soundMusicBackground.stop();
   			game.enterState(MainMenu.ID);
   			break;
 
@@ -207,7 +205,7 @@ public class World3 extends BasicGameState implements OnClickListener, EnterActi
 		 			score=0;
 		 			setDifficulty(difficulty);
 		 			timeInitial=System.currentTimeMillis(); // on reinitialise le temps
-		 			tower=new Tower(Main.longueur/2,Main.hauteur,new Block(pendulum.getX() - 50, Main.hauteur-101,100,100,new Image(World3.DIRECTORY_IMAGES+"Blocs/"+World3.colorImage+" Porte.png")));
+		 			tower=new Tower(Main.longueur/2,Main.hauteur,new Block(pendulum.getX() - 50, Main.hauteur-101,100,100,new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Porte.png")));
 
 		 			soundMusicBackground=new Music(DIRECTORY_MUSICS+"what_is_love.ogg");
 		 			soundMusicBackground.play(1, 0.3f);
@@ -252,7 +250,7 @@ public class World3 extends BasicGameState implements OnClickListener, EnterActi
 	}
 
 	public static void setScore(int score) {
-		World3.score = score;
+		World.score = score;
 	}
 
 	@Override

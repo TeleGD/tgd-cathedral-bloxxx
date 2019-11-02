@@ -1,4 +1,4 @@
-package game3.world;
+package games.cathedralBloxxx;
 import org.newdawn.slick.Image;
 public class Star extends SkyElements {
 
