@@ -7,6 +7,6 @@
 - Julien Domptail (@Murllem)
 - leterrierM (@leterrierM)
 - Nicolas Bernardes (@nicorb)
-- Stefan Von Carstein (@stefanVonCarstein)
+- Stefan Morel--Doridat (@stefanVonCarstein)
 - Stéphane Rimlinger (@srimlinger)
 - Valentin Moreau (@ValentinMoreau)
