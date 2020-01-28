@@ -1,51 +1,54 @@
 package games.cathedralBloxxx;
 
-
-import org.newdawn.slick.Image;
 import java.util.ArrayList;
 import java.util.Random;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.state.StateBasedGame;
 
-import general.Main;
+import app.AppLoader;
+
 public class Decor {
 
 	private int height;
 	private int compteur;
 	private ArrayList<SkyElements> listSkyElements;
-	private boolean endTown=false;
+	private boolean endTown;
 	private Image background;
-	private boolean changeHeigth=true;
+	private boolean changeHeigth;
 	private int red;
 	private int blue;
 	private int green;
-	private Image[] cloudImages=new Image[4];
+	private Image[] cloudImages;
 	private Image imageStar;
-	private static ArrayList<Mobile> mobiles=new ArrayList<>();
-	public Decor() throws SlickException {
+	private ArrayList<Mobile> mobiles;
+
+	public Decor(GameContainer container) {
 		this.height=0;
 		this.compteur=0;
 		this.listSkyElements=new ArrayList<SkyElements>();
-		this.background =new Image(World.DIRECTORY_IMAGES+"DecorBase.png");
-        this.background=background.getScaledCopy(Main.longueur,Main.hauteur);
+		this.endTown = false;
+		this.background =AppLoader.loadPicture(World.DIRECTORY_IMAGES+"DecorBase.png");
+		this.background=background.getScaledCopy(container.getWidth(),container.getHeight());
+		this.changeHeigth = true;
+		this.cloudImages = new Image[4];
+		this.mobiles = new ArrayList<>();
 
 		for(int i=0;i<cloudImages.length;i++){
-			cloudImages[i]=new Image(World.DIRECTORY_IMAGES+"SkyElements/cloud"+(i+1)+".png");
+			cloudImages[i]=AppLoader.loadPicture(World.DIRECTORY_IMAGES+"SkyElements/cloud"+(i+1)+".png");
 		}
 
-		imageStar=new Image(World.DIRECTORY_IMAGES+"SkyElements/star2.png");
+		imageStar=AppLoader.loadPicture(World.DIRECTORY_IMAGES+"SkyElements/star2.png");
 
 		red=169;
 		green=217;
 		blue=199;
 	}
 
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
-	{
+	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) {
 		this.compteur+=1;
 		if(this.height>=arg0.getHeight()+500){
 			this.endTown=true;
@@ -53,9 +56,7 @@ public class Decor {
 		Random r = new Random();
 		if(changeHeigth )
 		{
-
 			if(height<=1000+arg0.getHeight() && (compteur%350==0 || compteur==1)){
-
 				int numberCloud= r.nextInt(2);
 				for(int i =0;i<=numberCloud;i++){
 					int posX=0 + r.nextInt(arg0.getWidth() - 0);
@@ -95,8 +96,8 @@ public class Decor {
 		listSkyElements.removeAll(listSkyElementsToRemove);
 
 		if(compteur %180==0 && r.nextInt(5)==1){
-			mobiles.add(new Copter());
-			mobiles.get(mobiles.size()-1).start();
+			mobiles.add(new Copter(arg0,this));
+			mobiles.get(mobiles.size()-1).start(arg0);
 		}
 
 		for(int i=0;i<mobiles.size();i++){
@@ -104,10 +105,9 @@ public class Decor {
 		}
 
 		if(height>=1000+arg0.getHeight() && compteur%20==0){
-
 			if(compteur %180==0 && r.nextInt(5)==1){
-				mobiles.add(new Alien());
-				mobiles.get(mobiles.size()-1).start();
+				mobiles.add(new Alien(arg0,this));
+				mobiles.get(mobiles.size()-1).start(arg0);
 			}
 
 			for(int i=0;i<mobiles.size();i++){
@@ -116,10 +116,7 @@ public class Decor {
 		}
 	}
 
-
-
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)  {
-
+	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) {
 		if(this.endTown)
 		{
 			red+=-1;
@@ -168,10 +165,9 @@ public class Decor {
 		this.changeHeigth=true;
 	}
 
-	public static ArrayList<Mobile> getMobiles() {
+	public ArrayList<Mobile> getMobiles() {
 		// TODO Auto-generated method stub
 		return mobiles;
 	}
-
 
 }

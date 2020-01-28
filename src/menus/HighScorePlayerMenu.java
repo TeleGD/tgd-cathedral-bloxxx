@@ -9,16 +9,21 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import api.APIListener;
 import api.TGDApi;
+
 import db.Person;
+
 import games.cathedralBloxxx.World;
 
 public class HighScorePlayerMenu extends Menu implements APIListener{
 
-	public static int ID=-2039;
-
-	private static String namePlayer="nicorb";
+	private String namePlayer="nicorb";
 
 	private Person player;
+
+	public HighScorePlayerMenu(int ID) {
+		super(ID);
+	}
+
 	@Override
 	public void enter(GameContainer arg0, StateBasedGame arg1){
 		TGDApi.setApiListener(this);
@@ -42,16 +47,10 @@ public class HighScorePlayerMenu extends Menu implements APIListener{
 	}
 	@Override
 	public void onOptionItemSelected(int position) {
-		game.enterState(MainMenu.ID, new FadeOutTransition(),
-				new FadeInTransition());
+		game.enterState(1, new FadeOutTransition(), new FadeInTransition());
 	}
 
-	@Override
-	public int getID() {
-		return ID;
-	}
-
-	public static void setNamePlayer(String text) {
+	public void setNamePlayer(String text) {
 		namePlayer=text;
 	}
 
@@ -59,7 +58,7 @@ public class HighScorePlayerMenu extends Menu implements APIListener{
 	public void keyPressed(int key,char c){
 		super.keyPressed(key, c);
 		if(key==Input.KEY_ESCAPE){
-			game.enterState(ScoreMenu.ID, new FadeOutTransition(),new FadeInTransition());
+			game.enterState(4, new FadeOutTransition(),new FadeInTransition());
 		}
 	}
 
@@ -70,7 +69,7 @@ public class HighScorePlayerMenu extends Menu implements APIListener{
 			player=(Person)content;
 
 			super.removeAllItems();
-			super.addItem("Score "+World.GAME_NAME +": "+player.getScoreAtGame(3));
+			super.addItem("Score "+World.GAME_NAME +": "+player.getScoreAtGame(1));
 		}
 	}
 

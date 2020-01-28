@@ -3,60 +3,57 @@ package games.cathedralBloxxx;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
+
+import app.AppLoader;
 
 public class Block extends Rectangle {
 
+	private World world;
 	private float speedX;
 	private float speedY;
 	private float angle;
 	private float successY;
 	private float accelY;
 
-	private boolean isDroping = false;
-	private boolean isRealeased = false;
+	private boolean isDroping;
+	private boolean isRealeased;
 	private Image image;
-	private Sound soundPop;
+	private Audio soundPop;
 	private float accelX;
 	private boolean willDeath;
 	private float speedAngle;
 
-
-	public Block(float x, float y, float width, float height,Image image) {
+	public Block(World world, float x, float y, float width, float height,Image image) {
 		super(x, y, width, height);
 		this.image=image.getScaledCopy((int)width, (int)height);
-		init();
+		init(world);
 	}
 
-
-
-	public Block(float x, float y, float width, float height) {
+	public Block(World world, float x, float y, float width, float height) {
 		super(x, y, width, height);
-		init();
-	}
-	private void init() {
-
-		try {
-			soundPop=new Sound(World.DIRECTORY_SOUNDS+"pop.wav");
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		init(world);
 	}
 
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
+	private void init(World world) {
+		this.world = world;
+		this.isDroping = false;
+		this.isRealeased = false;
+		soundPop=AppLoader.loadAudio(World.DIRECTORY_SOUNDS+"pop.wav");
+	}
+
+	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) {
 		// Rendering
 
-		//g.rotate(Main.longueur/2, -100, -(float) (angle*180/Math.PI));
+		//g.rotate(arg0.getWidth()/2, -100, -(float) (angle*180/Math.PI));
 		//g.rotate(getCenterY(), getCenterY(), (float) (angle*180/Math.PI));
 		image.setRotation(angle);
 		g.drawImage(image,x,y);
 	}
 
-	public void update(GameContainer arg0, StateBasedGame arg1, int delta) throws SlickException {
+	public void update(GameContainer arg0, StateBasedGame arg1, int delta) {
 		// Updating
 
 		x += speedX*delta;
@@ -67,53 +64,50 @@ public class Block extends Rectangle {
 		speedY+=accelY;
 
 		if(isDroping){
-			int isColliding=World.getTower().isColliding(this);
+			int isColliding=world.getTower().isColliding(this);
 			if( isColliding==1){
-				World.getTower().blockCollidedWithTower(this);
-				soundPop.play();
+				world.getTower().blockCollidedWithTower(this);
+				soundPop.playAsSoundEffect(1,.3f,false);
 			}else if(isColliding==2){// frole a gauche
 				if(willDeath==false){
 					this.speedX-=1.3f;
-					new Sound(World.DIRECTORY_SOUNDS+"game_over.ogg").play();
+					AppLoader.loadAudio(World.DIRECTORY_SOUNDS+"game_over.ogg").playAsSoundEffect(1,.3f,false);
 				}
 				this.speedY=-0.5f;
 
-				float angle=90*(World.getTower().getTopX()-getX()-width/2)/(width/2);
+				float angle=90*(world.getTower().getTopX()-getX()-width/2)/(width/2);
 				setAngle(360-angle);
 				willDeath=true;
 			}else if(isColliding==3){
 				if(willDeath==false){
 					this.speedX+=1.3f;
-					new Sound(World.DIRECTORY_SOUNDS+"game_over.ogg").play();
-
+					AppLoader.loadAudio(World.DIRECTORY_SOUNDS+"game_over.ogg").playAsSoundEffect(1,.3f,false);
 				}
 				this.speedY=-0.5f;
-				float angle=90*(getX()-World.getTower().getTopX()-width/2)/(width/2);
+				float angle=90*(getX()-world.getTower().getTopX()-width/2)/(width/2);
 				setAngle(angle);
 				willDeath=true;
-
 			}else if(willDeath){
-
-				float angle=90*(getX()-World.getTower().getTopX()-width/2)/(width/2);
+				float angle=90*(getX()-world.getTower().getTopX()-width/2)/(width/2);
 				setAngle(angle);
 			}
 		}
-
 	}
+
 	// Methods =================================================================================
 
-	public void drop(float angleSpeed,float speedX,float speedY){
+	public void drop(float angleSpeed, float speedX, float speedY) {
 		if(isDroping)return;
 
-		successY = World.getTower().getTopY();
+		successY = world.getTower().getTopY();
 		this.speedY = speedY;
 		this.speedX = speedX;
 		this.speedAngle=angleSpeed;
 		this.accelY= World.GRAVITY;
 		isDroping = true;
 		isRealeased = true;
-
 	}
+
 	// Getters and Setters =====================================================================
 
 	public float getSpeedX() {
@@ -158,14 +152,9 @@ public class Block extends Rectangle {
 		this.isRealeased = isRealeased;
 	}
 
-
-
 	public void setAngleSpeed(int speedAngle) {
 		this.speedAngle=speedAngle;
 	}
-
-
-
 
 	public float getAngle() {
 		return angle;

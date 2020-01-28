@@ -5,17 +5,15 @@ import java.util.Random;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.StateBasedGame;
 
-import general.Main;
+import app.AppLoader;
 
+public class Mobile extends Rectangle {
 
-
-public class Mobile extends Rectangle{
-
+	private Decor decor;
 	private Image image0;
 	private Image image1;
 
@@ -23,69 +21,55 @@ public class Mobile extends Rectangle{
 	private float goToY;
 	private boolean isFlying;
 	private int timer;
-	private int nb = 0;
-	private float alpha = 0.02f;
-	public boolean toDestroy = false;
+	private int nb;
+	private float alpha;
+	private boolean toDestroy;
 
-	public boolean isFlying() {
-		return isFlying;
-	}
+	private Audio sound;
 
-	public static Sound sound;
-
-	public boolean isToDestroy() {
-		return toDestroy;
-	}
-
-	public Mobile(String urlImage,String urlImage2,String urlSound){
+	public Mobile(GameContainer container, Decor decor, String urlImage, String urlImage2, String urlSound) {
 		super(50, 50, 120, 60);
+		this.decor = decor;
 		if(sound==null){
-			try {
-				sound=new Sound(urlSound);
-			} catch (SlickException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			sound=AppLoader.loadAudio(urlSound);
 		}
-		leave();
+		leave(container);
 
 		timer = (int) ((Math.random() + 1) * 600);
 
 		this.x = goToX;
 		this.y = goToY;
 
-		try {
-			image0=new Image(urlImage).getScaledCopy((int)width, (int)height);
-			image1=new Image(urlImage2).getScaledCopy((int)width, (int)height);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		image0=AppLoader.loadPicture(urlImage).getScaledCopy((int)width, (int)height);
+		image1=AppLoader.loadPicture(urlImage2).getScaledCopy((int)width, (int)height);
 
+		this.nb = 0;
+		this.alpha = 0.02f;
+		this.toDestroy = false;
 	}
 
-	public void start(){
-		majGoTo();
+	public void start(GameContainer container) {
+		majGoTo(container);
 		isFlying = true;
-		sound.loop();
+		sound.playAsSoundEffect(1,.3f,true);
 	}
 
-	private void majGoTo() {
-		goToX = new Random().nextInt(Main.longueur);
-		goToY = new Random().nextInt(Main.hauteur);
+	private void majGoTo(GameContainer container) {
+		goToX = new Random().nextInt(container.getWidth());
+		goToY = new Random().nextInt(container.getHeight());
 	}
 
-	public void stop(){
+	public void stop(GameContainer container) {
 		isFlying = false;
-		leave();
+		leave(container);
 	}
 
-	private void leave() {
-		goToX = Math.random() < 0.5 ? -Main.longueur-250 : Main.longueur+250;
-		goToY = (float) (Main.hauteur * Math.random());
+	private void leave(GameContainer container) {
+		goToX = Math.random() < 0.5 ? -container.getWidth()-250 : container.getWidth()+250;
+		goToY = (float) (container.getHeight() * Math.random());
 	}
 
-
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)  {
+	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) {
 		// Rendering
 		nb ++;
 		if(nb%10 <= 5){
@@ -95,31 +79,35 @@ public class Mobile extends Rectangle{
 		}
 	}
 
-	public void update(GameContainer arg0, StateBasedGame arg1, int delta)  {
+	public void update(GameContainer arg0, StateBasedGame arg1, int delta) {
 		// Updating
 		x = lerp(x,goToX, alpha);
 		y = lerp(y, goToY, alpha);
 		if( (x - goToX) < 2 && (y - goToY) < 2 ){
 			if(isFlying){
-				majGoTo();
+				majGoTo(arg0);
 			}else{
-				if(x>Main.longueur || x<0){
-					Decor.getMobiles().remove(this);
+				if(x>arg0.getWidth() || x<0){
+					decor.getMobiles().remove(this);
 					sound.stop();
 				}
-
 			}
 		}
 		if(nb > timer){
-			stop();
+			stop(arg0);
 		}
 	}
 
-	private float lerp(float point1, float point2, float alpha)
-	{
-	    return point1 + alpha * (point2 - point1);
+	private float lerp(float point1, float point2, float alpha) {
+		return point1 + alpha * (point2 - point1);
 	}
 
+	public boolean isFlying() {
+		return isFlying;
+	}
 
+	public boolean isToDestroy() {
+		return toDestroy;
+	}
 
 }

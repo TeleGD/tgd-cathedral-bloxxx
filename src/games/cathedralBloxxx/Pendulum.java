@@ -1,32 +1,33 @@
 package games.cathedralBloxxx;
 
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import general.Main;
+import app.AppLoader;
 
-public class Pendulum extends BasicGameState{
+public class Pendulum {
+
+	private World world;
 	private int x;
 	private int y;
 	private float speed;
 	private float theta;
 	private float length;
 
-
 	private double omega;
 	private Block block;
 	private Image corde;
+	private float initialAngle;
 
-	public Pendulum(){
-		x=Main.longueur/2;
+	public Pendulum(GameContainer container, World world) {
+		this.world = world;
+		x=container.getWidth()/2;
 		y=-1400;
 		speed=8000;
+		theta=0;
 		length=1800;
 		initialAngle=(float) (-Math.PI/12);
 		omega=World.GRAVITY/length;
@@ -34,35 +35,15 @@ public class Pendulum extends BasicGameState{
 		addBlock();
 	}
 
-	public void loadImage(){
-		try {
-			corde=new Image(World.DIRECTORY_IMAGES+"corde.png").getScaledCopy(10, (int) length);
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void loadImage() {
+		corde=AppLoader.loadPicture(World.DIRECTORY_IMAGES+"corde.png").getScaledCopy(10, (int) length);
 	}
-
 
 	private void addBlock() {
-		try {
-			block=new Block(0,0,100,100,new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Normal.png"));
-		} catch (SlickException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		block=new Block(this.world,0,0,100,100,AppLoader.loadPicture(World.DIRECTORY_IMAGES+"Blocs/"+world.getColorImage()+" Normal.png"));
 	}
 
-
-
-
-	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		theta=0;
-	}
-
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(GameContainer container, StateBasedGame game, Graphics g) {
 		g.setColor(Color.white);
 
 		g.drawImage(corde,x,y);
@@ -70,12 +51,9 @@ public class Pendulum extends BasicGameState{
 		corde.setCenterOfRotation(0, 0);
 
 		block.render(container, game, g);
-
-
 	}
 
-	@Override
-	public void update(GameContainer container, StateBasedGame game, int arg2) throws SlickException {
+	public void update(GameContainer container, StateBasedGame game, int arg2) {
 		theta=calculateTheta(); //theta=theta0cos(wt)
 		block.update(container, game, arg2);
 		if(!block.isRealeased()){
@@ -84,19 +62,17 @@ public class Pendulum extends BasicGameState{
 			block.setAngle((float) (-theta*180/Math.PI));
 		}
 
-
 		speed+=0.01;
 		speed=Math.min(speed,18000);
-
 	}
 
 	private float calculateTheta() {
-		return (float) (initialAngle*Math.cos(speed*(omega*World.getTimeInMillis()/1000.0)));
-	}
-	private float calculateThetaDot() {
-		return (float) (initialAngle*-1*omega*speed*Math.sin(speed*(omega*World.getTimeInMillis()/1000.0)));
+		return (float) (initialAngle*Math.cos(speed*(omega*world.getTimeInMillis()/1000.0)));
 	}
 
+	private float calculateThetaDot() {
+		return (float) (initialAngle*-1*omega*speed*Math.sin(speed*(omega*world.getTimeInMillis()/1000.0)));
+	}
 
 	public void releaseBlock() {
 		if(block.isRealeased())return;
@@ -104,18 +80,10 @@ public class Pendulum extends BasicGameState{
 		block.drop((float) (-thetaDot/3000*180.0f/Math.PI),(float)(length*thetaDot*1+Math.pow(Math.tan(theta),2))/1800,0);
 	}
 
-
-
-
-	@Override
-	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public float getX() {
 		return this.x;
 	}
+
 	public float getY() {
 		return this.y;
 	}
@@ -128,32 +96,22 @@ public class Pendulum extends BasicGameState{
 		this.x=x;
 	}
 
-
 	public void notifyStackedBlock() {
 		addBlock();
 	}
 
-
 	public float getLength() {
 		return length;
 	}
-
-
 
 	public void setLength(float length) {
 		this.length = length;
 		loadImage();
 	}
 
-
-
-
-	private float initialAngle;
 	public float getInitialAngle() {
 		return initialAngle;
 	}
-
-
 
 	public void setInitialAngle(float initialAngle) {
 		this.initialAngle = initialAngle;
@@ -163,8 +121,6 @@ public class Pendulum extends BasicGameState{
 		return speed;
 	}
 
-
-
 	public void setSpeed(float f) {
 		this.speed = f;
 	}
@@ -172,13 +128,13 @@ public class Pendulum extends BasicGameState{
 	public Block getBlock() {
 		return block;
 	}
-	public void finishTower() throws SlickException {
-		block=new Block(World.getTower().getTop().getX(),0,100,100, new Image(World.DIRECTORY_IMAGES+"Blocs/"+World.colorImage+" Toit.png"));
+
+	public void finishTower() {
+		block=new Block(this.world,world.getTower().getTop().getX(),0,100,100, AppLoader.loadPicture(World.DIRECTORY_IMAGES+"Blocs/"+world.getColorImage()+" Toit.png"));
 		block.setSpeedY(2f);
 		block.setSpeedX(0f);
 		block.setRealeased(true);
 		block.setIsDroping(true);
 	}
-
 
 }

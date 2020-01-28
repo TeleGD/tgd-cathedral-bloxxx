@@ -1,13 +1,11 @@
 package menus;
 
-import java.awt.Font;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -16,38 +14,39 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import api.APIListener;
 import api.TGDApi;
+
+import app.AppFont;
+import app.AppLoader;
+import app.ui.Button;
+import app.ui.TGDComponent;
+import app.ui.TGDComponent.OnClickListener;
+import app.ui.TextField;
+import app.ui.TextField.EnterActionListener;
+
 import db.Person;
+
 import games.cathedralBloxxx.World;
-import general.Main;
-import general.ui.Button;
-import general.ui.TGDComponent;
-import general.ui.TGDComponent.OnClickListener;
-import general.ui.TextField;
-import general.ui.TextField.EnterActionListener;
-import general.utils.FontUtils;
 
 public class ScoreMenu extends BasicGameState implements EnterActionListener, OnClickListener, APIListener{
 
-	public static int ID=-1;
-
 	private ArrayList<ArrayList<Person>> games=new ArrayList<ArrayList<Person>>();
 
-	private static final int WIDTH_SEPARATOR = 5;
-	private static final int HEIGHT_ROW=45;
-	private static final int NB_GAME=1;
+	private int WIDTH_SEPARATOR;
+	private int HEIGHT_ROW;
+	private int NB_GAME;
 
-	private static final int BEGIN_Y_TAB=100;
-	private static final int END_Y_TAB=Main.hauteur-150;
-	private static final int PADDING_LEFT_COLUMN = 30;
-	private static final int PADDING_RIGHT_COLUMN = 30;
-	private static final int PADDING_LEFT = 40;
-	private static final int PADDING_RIGHT = 40;
+	private int BEGIN_Y_TAB;
+	private int END_Y_TAB;
+	private int PADDING_LEFT_COLUMN;
+	private int PADDING_RIGHT_COLUMN;
+	private int PADDING_LEFT;
+	private int PADDING_RIGHT;
 
-	private static final int LARGEUR_TABLEAU=Main.longueur-PADDING_LEFT- PADDING_RIGHT;
-	private static final int LARGEUR_COLUMN=LARGEUR_TABLEAU/NB_GAME;
-	private static final int HAUTEUR_TABLEAU=END_Y_TAB-BEGIN_Y_TAB;
+	private int LARGEUR_TABLEAU;
+	private int LARGEUR_COLUMN;
+	private int HAUTEUR_TABLEAU;
 
-	private static final String TITLE = "MEILLEURS SCORES";
+	private String TITLE = "MEILLEURS SCORES";
 
 
 	private TrueTypeFont fontHighScore;
@@ -55,6 +54,35 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 	private Button button;
 
 	private StateBasedGame game;
+
+	private int ID;
+
+	public ScoreMenu(int ID) {
+		this.ID = ID;
+	}
+
+	@Override
+	public int getID() {
+		return this.ID;
+	}
+
+	@Override
+	public void init(GameContainer container, StateBasedGame game) {
+		WIDTH_SEPARATOR = 5;
+		HEIGHT_ROW=45;
+		NB_GAME=1;
+
+		BEGIN_Y_TAB=100;
+		END_Y_TAB=container.getHeight()-150;
+		PADDING_LEFT_COLUMN = 30;
+		PADDING_RIGHT_COLUMN = 30;
+		PADDING_LEFT = 40;
+		PADDING_RIGHT = 40;
+
+		LARGEUR_TABLEAU=container.getWidth()-PADDING_LEFT- PADDING_RIGHT;
+		LARGEUR_COLUMN=LARGEUR_TABLEAU/NB_GAME;
+		HAUTEUR_TABLEAU=END_Y_TAB-BEGIN_Y_TAB;
+	}
 
 	@Override
 	public void enter(GameContainer container, StateBasedGame game){
@@ -65,16 +93,16 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 			games.add(new ArrayList<Person>());
 			TGDApi.getScoreForGame(i+1,10);
 		}
-		fontHighScore=FontUtils.loadCustomFont("press-start-2p.ttf", Font.BOLD, 35);
+		fontHighScore=AppLoader.loadFont("/fonts/press-start-2p.ttf", AppFont.BOLD, 35);
 
-		textField=new TextField(container,Main.longueur/2,END_Y_TAB+50,TGDComponent.AUTOMATIC,TGDComponent.AUTOMATIC);
+		textField=new TextField(container,container.getWidth()/2,END_Y_TAB+50,TGDComponent.AUTOMATIC,TGDComponent.AUTOMATIC);
 		textField.setPlaceHolder("Entrez un pseudo pour voir le score ...");
 		textField.setEnterActionListener(this);
 		textField.setMaxNumberOfLetter(80);
-		textField.setX(Main.longueur/2-textField.getWidth()/2);
+		textField.setX(container.getWidth()/2-textField.getWidth()/2);
 
 
-		button=new Button("VISUALISER",container,Main.longueur/2,END_Y_TAB+50,TGDComponent.AUTOMATIC,TGDComponent.AUTOMATIC);
+		button=new Button("VISUALISER",container,container.getWidth()/2,END_Y_TAB+50,TGDComponent.AUTOMATIC,TGDComponent.AUTOMATIC);
 		button.setHeight(textField.getHeight());
 		button.setOnClickListener(this);
 		button.setX(textField.getX()+textField.getWidth()+20);
@@ -82,21 +110,10 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 	}
 
 	@Override
-	public int getID() {
-		return ID;
-	}
-
-	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+	public void render(GameContainer container, StateBasedGame game, Graphics g) {
 		g.setColor(Color.white);
 		g.setFont(fontHighScore);
-		g.drawString(TITLE, (Main.longueur-fontHighScore.getWidth(TITLE))/2, 30);
+		g.drawString(TITLE, (container.getWidth()-fontHighScore.getWidth(TITLE))/2, 30);
 		g.resetFont();
 
 		for(int i=0;i<NB_GAME;i++)
@@ -129,9 +146,9 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 	}
 
 	@Override
-	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+	public void update(GameContainer container, StateBasedGame game, int delta) {
 		textField.update(container, game, delta);
-		textField.setX(Main.longueur/2-textField.getWidth()/2);
+		textField.setX(container.getWidth()/2-textField.getWidth()/2);
 
 		button.update(container, game, delta);
 		button.setX(textField.getX()+textField.getWidth()+20);
@@ -150,12 +167,12 @@ public class ScoreMenu extends BasicGameState implements EnterActionListener, On
 	public void keyPressed(int key,char c){
 		super.keyPressed(key, c);
 		if(key==Input.KEY_ESCAPE){
-			game.enterState(MainMenu.ID, new FadeOutTransition(),new FadeInTransition());
+			game.enterState(1, new FadeOutTransition(),new FadeInTransition());
 		}
 	}
 	private void showHighScorePlayer() {
-		HighScorePlayerMenu.setNamePlayer(textField.getText());
-		game.enterState(HighScorePlayerMenu.ID, new FadeOutTransition(),new FadeInTransition());
+		((HighScorePlayerMenu) game.getState(5)).setNamePlayer(textField.getText());
+		game.enterState(5, new FadeOutTransition(),new FadeInTransition());
 	}
 
 	@Override
