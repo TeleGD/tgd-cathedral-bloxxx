@@ -76,7 +76,6 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 		bouton=new Button("ENREGISTRER",container,container.getWidth()/2+60,container.getHeight()*0.6f,TGDComponent.AUTOMATIC,textField.getHeight());
 		bouton.setOnClickListener(this);
 		bouton.setPadding(10,15,10,15);
-
 	}
 
 	@Override
