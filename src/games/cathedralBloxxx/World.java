@@ -1,6 +1,7 @@
 package games.cathedralBloxxx;
 
 import java.io.File;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -13,17 +14,13 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import api.TGDApi;
-
 import app.AppFont;
 import app.AppLoader;
-import app.ui.Button;
 import app.ui.TGDComponent;
-import app.ui.TGDComponent.OnClickListener;
 import app.ui.TextField;
-import app.ui.TextField.EnterActionListener;
 
-public class World extends BasicGameState implements OnClickListener, EnterActionListener {
+public class World extends BasicGameState {
+
 	public final static float GRAVITY= 0.3f;
 
 	public final static String GAME_NAME="Cathedral Bloxxx";
@@ -46,7 +43,6 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 	private Audio soundMusicBackground;
 	private float soundMusicBackgroundPos;
 	private TextField textField;
-	private Button bouton;
 	private String textPerdu;
 
 	private int ID;
@@ -72,10 +68,6 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 		textField.setMaxNumberOfLetter(13);
 		textField.setUpperCaseLock(true);
 		textField.setPlaceHolder("Entrez un pseudo");
-		textField.setEnterActionListener(this);
-		bouton=new Button("ENREGISTRER",container,container.getWidth()/2+60,container.getHeight()*0.6f,TGDComponent.AUTOMATIC,textField.getHeight());
-		bouton.setOnClickListener(this);
-		bouton.setPadding(10,15,10,15);
 	}
 
 	@Override
@@ -108,14 +100,8 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 			game.enterState(2, new FadeOutTransition(), new FadeInTransition());
 		}
 		this.time += delta;
-		if (input.isKeyPressed(Input.KEY_SPACE)) {
+		if (input.isKeyPressed(Input.KEY_SPACE) && !this.perdu) {
 			pendulum.releaseBlock();
-			if(perdu){
-				this.setState(3);
-				game.enterState(3);
-			}else{
-				pendulum.releaseBlock();
-			}
 		}
 		decor.update(container, game, delta);
 		tower.update(container, game, delta);
@@ -125,14 +111,16 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 		if(!perdu && pendulum.getBlock().isRealeased() && pendulum.getBlock().getY()>container.getHeight()){
 			pendulum.finishTower();
 			perdu=true;
-			textField.setText("");
 			textPerdu="PERDU !";
-			textField.setHasFocus(true);
 		}
-
 		if(perdu){
 			textField.update(container, game, delta);
-			bouton.update(container, game, delta);
+			textField.setHasFocus(true);
+		}
+		if (input.isKeyPressed(Input.KEY_ENTER) && this.perdu) {
+			this.save();
+			this.setState(3);
+			game.enterState(this.getID());
 		}
 	}
 
@@ -161,7 +149,6 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 			context.drawString("PSEUDO", textField.getX()-context.getFont().getWidth("PSEUDO")-25, textField.getY()+textField.getHeight()/2-context.getFont().getHeight("PSEUDO")/2);
 
 			textField.render(container, game, context);
-			bouton.render(container, game, context);
 		}
 
 		context.setFont(fontPerdu);
@@ -208,7 +195,27 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 		return this.state;
 	}
 
-	public void setDifficulty(GameContainer container,int difficulty) {
+	private void save() {
+		String player = textField.getText();
+		if (player.length() == 0) {
+			return;
+		}
+		double count = this.score;
+		List<Score> scores = Loader.restoreScores(this.difficulty);
+		int i = 0;
+		int li = scores.size();
+		while (i < li && scores.get(i).getCount() >= count) {
+			++i;
+		}
+		scores.add(i, new Score(player, count));
+		while (li >= 10) {
+			scores.remove(li);
+			--li;
+		}
+		Loader.saveScores(this.difficulty, scores);
+	}
+
+	private void setDifficulty(GameContainer container,int difficulty) {
 		if(difficulty==0){
 			colorImage="Rouge";
 			pendulum=new Pendulum(container,this);
@@ -228,31 +235,20 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 		}
 	}
 
-	public long getTime() {
-		return this.time / 1000;
-	}
-
 	public long getTimeInMillis() {
-		// TODO Auto-generated method stub
 		return this.time;
 	}
 
 	public Tower getTower() {
-		// TODO Auto-generated method stub
 		return tower;
 	}
 
 	public Pendulum getPendulum() {
-		// TODO Auto-generated method stub
 		return pendulum;
 	}
 
 	public Decor getDecor() {
 		return decor;
-	}
-
-	public void notifyStackedBlock() {
-		// TODO Auto-generated method stub
 	}
 
 	public int getDifficulty() {
@@ -273,18 +269,6 @@ public class World extends BasicGameState implements OnClickListener, EnterActio
 
 	public void setScore(int score) {
 		this.score = score;
-	}
-
-	@Override
-	public void onClick(TGDComponent component) {
-		TGDApi.updateScoreForGame(textField.getText(), 3, score);
-		textPerdu="Score Updated !";
-	}
-
-	@Override
-	public void onEnterPressed() {
-		TGDApi.updateScoreForGame(textField.getText(), 3, score);
-		textPerdu="Score Updated !";
 	}
 
 }

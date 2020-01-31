@@ -10,8 +10,6 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import app.AppMenu;
 import app.elements.MenuItem;
 
-import games.cathedralBloxxx.World;
-
 public class Level extends AppMenu {
 
 	public Level(int ID) {

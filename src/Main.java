@@ -53,9 +53,9 @@ public final class Main {
 				this.addState(new pages.Choice(1));
 				this.addState(new pages.Pause(2));
 				this.addState(new games.cathedralBloxxx.World(3));
-				this.addState(new menus.ScoreMenu(4));
-				this.addState(new menus.HighScorePlayerMenu(5));
-				this.addState(new games.cathedralBloxxx.Level(6));
+				this.addState(new games.cathedralBloxxx.Leaderboard(4));
+				this.addState(new games.cathedralBloxxx.Level(5));
+				this.addState(new games.cathedralBloxxx.Level2(6));
 			}
 
 		};

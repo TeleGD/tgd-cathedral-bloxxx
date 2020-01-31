@@ -35,7 +35,7 @@ public class Pendulum {
 		addBlock();
 	}
 
-	public void loadImage() {
+	private void loadImage() {
 		corde=AppLoader.loadPicture(World.DIRECTORY_IMAGES+"corde.png").getScaledCopy(10, (int) length);
 	}
 
@@ -88,37 +88,13 @@ public class Pendulum {
 		return this.y;
 	}
 
-	public void setY(int y) {
-		this.y=y;
-	}
-
-	public void setX(int x) {
-		this.x=x;
-	}
-
 	public void notifyStackedBlock() {
 		addBlock();
-	}
-
-	public float getLength() {
-		return length;
 	}
 
 	public void setLength(float length) {
 		this.length = length;
 		loadImage();
-	}
-
-	public float getInitialAngle() {
-		return initialAngle;
-	}
-
-	public void setInitialAngle(float initialAngle) {
-		this.initialAngle = initialAngle;
-	}
-
-	public float getSpeed() {
-		return speed;
 	}
 
 	public void setSpeed(float f) {

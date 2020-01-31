@@ -63,9 +63,7 @@ public class Decor {
 					int posY=0;
 					int width=100 + r.nextInt(400);
 					int heigth=100 + r.nextInt(50);
-					int numberImageCloud=r.nextInt(cloudImages.length);
-
-					this.listSkyElements.add(new Cloud(posX,posY,width,heigth,numberImageCloud,cloudImages[i].getScaledCopy(width, heigth)));
+					this.listSkyElements.add(new Cloud(posX,posY,width,heigth,cloudImages[i].getScaledCopy(width, heigth)));
 				}
 				changeHeigth=false;
 			}
@@ -166,7 +164,6 @@ public class Decor {
 	}
 
 	public ArrayList<Mobile> getMobiles() {
-		// TODO Auto-generated method stub
 		return mobiles;
 	}
 

@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="lib/common/org.json.jar"/>
 	<classpathentry kind="lib" path="lib/common/slick-examples.jar"/>
 	<classpathentry kind="lib" path="lib/common/slick.jar"/>
-	<classpathentry kind="lib" path="lib/common/sqlite-jdbc-3.15.1.jar"/>
 	<classpathentry kind="lib" path="lib/common/tinylinepp.jar"/>
 	<classpathentry kind="lib" path="lib/x86/jinput.jar"/>
 	<classpathentry kind="lib" path="lib/x86/lwjgl_util_applet.jar"/>

@@ -23,7 +23,6 @@ public class Mobile extends Rectangle {
 	private int timer;
 	private int nb;
 	private float alpha;
-	private boolean toDestroy;
 
 	private Audio sound;
 
@@ -45,7 +44,6 @@ public class Mobile extends Rectangle {
 
 		this.nb = 0;
 		this.alpha = 0.02f;
-		this.toDestroy = false;
 	}
 
 	public void start(GameContainer container) {
@@ -100,14 +98,6 @@ public class Mobile extends Rectangle {
 
 	private float lerp(float point1, float point2, float alpha) {
 		return point1 + alpha * (point2 - point1);
-	}
-
-	public boolean isFlying() {
-		return isFlying;
-	}
-
-	public boolean isToDestroy() {
-		return toDestroy;
 	}
 
 }

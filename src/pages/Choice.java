@@ -25,12 +25,12 @@ public class Choice extends AppMenu {
 		this.setMenu(Arrays.asList(new MenuItem[] {
 			new MenuItem("Cathedral Bloxxx") {
 				public void itemSelected() {
-					game.enterState(6, new FadeOutTransition(), new FadeInTransition());
+					game.enterState(5, new FadeOutTransition(), new FadeInTransition());
 				}
 			},
 			new MenuItem("Scores") {
 				public void itemSelected() {
-					game.enterState(4, new FadeOutTransition(), new FadeInTransition());
+					game.enterState(6, new FadeOutTransition(), new FadeInTransition());
 				}
 			},
 			new MenuItem("Retour") {

@@ -15,7 +15,6 @@ public class Block extends Rectangle {
 	private float speedX;
 	private float speedY;
 	private float angle;
-	private float successY;
 	private float accelY;
 
 	private boolean isDroping;
@@ -29,11 +28,6 @@ public class Block extends Rectangle {
 	public Block(World world, float x, float y, float width, float height,Image image) {
 		super(x, y, width, height);
 		this.image=image.getScaledCopy((int)width, (int)height);
-		init(world);
-	}
-
-	public Block(World world, float x, float y, float width, float height) {
-		super(x, y, width, height);
 		init(world);
 	}
 
@@ -98,8 +92,6 @@ public class Block extends Rectangle {
 
 	public void drop(float angleSpeed, float speedX, float speedY) {
 		if(isDroping)return;
-
-		successY = world.getTower().getTopY();
 		this.speedY = speedY;
 		this.speedX = speedX;
 		this.speedAngle=angleSpeed;
@@ -135,12 +127,10 @@ public class Block extends Rectangle {
 	}
 
 	public boolean isDroping() {
-		// TODO Auto-generated method stub
 		return isDroping;
 	}
 
 	public void setIsDroping(boolean b) {
-		// TODO Auto-generated method stub
 		this.isDroping = b;
 	}
 

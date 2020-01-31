@@ -55,7 +55,7 @@ public class Tower extends Rectangle {
 		}
 	}
 
-	public void addBlock(Block initialBlock) {
+	private void addBlock(Block initialBlock) {
 		blocks.add(initialBlock);
 	}
 
