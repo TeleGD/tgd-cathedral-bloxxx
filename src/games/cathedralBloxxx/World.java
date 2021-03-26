@@ -1,6 +1,5 @@
 package games.cathedralBloxxx;
 
-import java.io.File;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -23,12 +22,9 @@ public class World extends BasicGameState {
 
 	public final static float GRAVITY= 0.3f;
 
-	public final static String GAME_NAME="Cathedral Bloxxx";
-
-	public final static String GAME_FOLDER_NAME="cathedralBloxxx";
-	public final static String DIRECTORY_SOUNDS="/sounds"+File.separator+GAME_FOLDER_NAME+File.separator;
-	public final static String DIRECTORY_MUSICS="/musics"+File.separator+GAME_FOLDER_NAME+File.separator;
-	public final static String DIRECTORY_IMAGES="/images"+File.separator+GAME_FOLDER_NAME+File.separator;
+	public final static String DIRECTORY_SOUNDS="/sounds/cathedralBloxxx/";
+	public final static String DIRECTORY_MUSICS="/musics/cathedralBloxxx/";
+	public final static String DIRECTORY_IMAGES="/images/cathedralBloxxx/";
 
 	private int score;
 	private Pendulum pendulum;
